@@ -1,0 +1,33 @@
+{#基础模板#}
+{#子模板继承基础模板，可重载block块#}
+
+<!DOCTYPE html>
+<title>{% block title %}{% endblock %} - Flaskr</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+
+{#nav标签定义导航标签的部分#}
+<nav>
+    <h1>Flaskr</h1>
+    <ul>
+        {#g 在模板中自动可用。判断 g.user 是否被设置（在 load_logged_in_user 中进行）#}
+        {% if g.user %}
+            <li><span>{{ g.user['username'] }}</span>
+            <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+        {% else %}
+            <li><a href="{{ url_for('auth.register') }}">Register</a>
+            <li><a href="{{ url_for('auth.login') }}">Log In</a>
+        {% endif %}
+    </ul>
+</nav>
+
+{#section标签 文档中的区段#}
+<section class="content">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</section>
+
